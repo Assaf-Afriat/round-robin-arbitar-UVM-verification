@@ -7,12 +7,20 @@
  * - req for (hold_cycles+1) cycles (min 1)
  * - idle_after cycles of req=0
  *
+ * Supports callbacks via RrReqDriverCb:
+ * - pre_drive: Called before driving (can modify item, skip drive)
+ * - post_drive: Called after driving (statistics, logging)
+ *
  * @see UVM_VERIFICATION_PLAN.md
+ * @see RrReqDriverCb.sv
  */
 
 class RrReqDriver #(int N = 4) extends uvm_driver #(RrReqItem #(N));
 
   `uvm_component_param_utils(RrReqDriver #(N))
+
+  // Register callback type with this driver class
+  `uvm_register_cb(RrReqDriver #(N), RrReqDriverCb)
 
   virtual RrArbIf #(N) m_vif;
 
@@ -50,6 +58,20 @@ class RrReqDriver #(int N = 4) extends uvm_driver #(RrReqItem #(N));
   endtask
 
   virtual task drive_item(RrReqItem #(N) item);
+    // =========================================================================
+    // PRE-DRIVE CALLBACK
+    // Callbacks can modify item or skip driving (return 0)
+    // =========================================================================
+    begin
+      uvm_callback_iter #(RrReqDriver #(N), RrReqDriverCb) iter = new(this);
+      for (RrReqDriverCb cb = iter.first(); cb != null; cb = iter.next()) begin
+        if (!cb.pre_drive(this, item)) begin
+          `uvm_info("DRV", "Callback skipped drive", UVM_MEDIUM)
+          return; // Skip this item
+        end
+      end
+    end
+
     // Idle before
     m_vif.req <= '0;
     repeat (item.idle_before) @(posedge m_vif.clk);
@@ -63,6 +85,17 @@ class RrReqDriver #(int N = 4) extends uvm_driver #(RrReqItem #(N));
     repeat (item.idle_after) @(posedge m_vif.clk);
 
     `uvm_info("DRV", $sformatf("Drove: %s", item.convert2string()), UVM_HIGH)
+
+    // =========================================================================
+    // POST-DRIVE CALLBACK
+    // For statistics, logging, synchronization
+    // =========================================================================
+    begin
+      uvm_callback_iter #(RrReqDriver #(N), RrReqDriverCb) iter = new(this);
+      for (RrReqDriverCb cb = iter.first(); cb != null; cb = iter.next()) begin
+        cb.post_drive(this, item);
+      end
+    end
   endtask
 
   virtual task reset_driver();
@@ -72,4 +105,5 @@ class RrReqDriver #(int N = 4) extends uvm_driver #(RrReqItem #(N));
 
 endclass : RrReqDriver
 
+// Typedef for N=4
 typedef RrReqDriver #(4) RrReqDriver4;

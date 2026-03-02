@@ -12,17 +12,18 @@ A complete SystemVerilog RTL design with production-quality UVM verification env
 This project demonstrates industry-standard verification practices on a parameterized N-way round-robin arbiter with starvation prevention.
 
 **Verification Results:**
-- 5/5 tests PASSED
+- 9/9 tests PASSED
 - 100% assertion coverage (0 failures)
 - ~50,000 scoreboard comparisons (0 mismatches)
 - \>95% functional coverage
+- UVM callbacks demonstrated
 
 ## Key Skills Demonstrated
 
 | Category | Skills |
 |----------|--------|
 | RTL Design | Parameterized SystemVerilog, FSM, timeout mechanism |
-| UVM | Agents, scoreboard, reference model, coverage collector |
+| UVM | Agents, scoreboard, reference model, coverage collector, callbacks |
 | SVA | Protocol assertions, cover properties |
 | Coverage | Covergroups, crosses, coverage-driven verification |
 | Automation | Python + Tcl scripting for Questa/ModelSim |
@@ -59,6 +60,7 @@ This project demonstrates industry-standard verification practices on a paramete
 | RrStressTest4 | Back-to-back high traffic | PASS |
 | RrCornerTest4 | Directed corner cases | PASS |
 | RrRegressionTest4 | Extended random regression | PASS |
+| RrCallbackFullTest4 | UVM callbacks demo | PASS |
 
 ### SVA Assertions
 
@@ -137,6 +139,7 @@ round-robin-arbiter/
 - [Design Specification](spec/SPEC.md)
 - [Verification Plan](docs/UVM_VERIFICATION_PLAN.md)
 - [Sign-Off Report](docs/SIGN_OFF.md)
+- [Future Enhancements](docs/FUTURE_ENHANCEMENTS.md)
 - [Run Scripts](scripts/Run/README.md)
 
 ## Technologies

@@ -9,8 +9,9 @@ Complete verification strategy: corner cases, constraints, SVA, coverage, and re
 | **Corner cases** | 27 scenarios | Implemented |
 | **SVA assertions** | 5 active (A1, A2, A3, A5, A8) | 100% passing |
 | **Coverage groups** | 5 covergroups + crosses | Implemented |
-| **Directed tests** | 5 (full, timeout, stress, corner, regression) | Implemented |
+| **Directed tests** | 9 (full, timeout, stress, corner, regression, callbacks) | Implemented |
 | **CR stimulus** | Constrained rand with timeout/hold bias | Implemented |
+| **UVM Callbacks** | Driver callbacks (pre/post_drive) | Implemented |
 
 ### Implementation Status
 
@@ -101,11 +102,13 @@ Complete verification strategy: corner cases, constraints, SVA, coverage, and re
 | **Test** | `RrBaseTest` | `tests/RrBaseTest.sv` | Base test with common setup |
 | **Test** | `RrFullTest4`, etc. | `tests/Rr*Test.sv` | Specific test configurations |
 | **Sequence** | `RrVirtualSeq` | `sequences/virtual/RrVirtualSeq.sv` | Orchestrates sub-sequences |
+| **Sequence** | `RrCallbackVirtualSeq` | `sequences/virtual/RrCallbackVirtualSeq.sv` | Callback demonstration sequence |
 | **Sequence** | `RrBaseReqSeq`, `RrTimeoutSeq`, etc. | `sequences/Rr*Seq.sv` | Stimulus generators |
 | **Environment** | `RrEnv` | `env/RrEnv.sv` | Top-level UVM environment |
 | **Agent** | `RrReqAgent` | `agent/RrReqAgent.sv` | Request agent (driver + sequencer + monitor) |
 | **Config** | `RrAgentConfig` | `agent/RrAgentConfig.sv` | Agent configuration object |
 | **Driver** | `RrReqDriver` | `agent/RrReqDriver.sv` | Drives `req` signals |
+| **Driver Callback** | `RrReqDriverCb` | `agent/RrReqDriverCb.sv` | Pre/post drive callbacks |
 | **Sequencer** | `RrReqSequencer` | `agent/RrReqSequencer.sv` | Sequencer for `RrReqItem` |
 | **Monitor** | `RrGntMonitor` | `agent/RrGntMonitor.sv` | Samples `req` and `gnt`, broadcasts `RrGntItem` |
 | **Scoreboard** | `RrScoreboard` | `scoreboard/RrScoreboard.sv` | Compares actual vs expected |
@@ -340,6 +343,10 @@ endclass
 | `RrStressTest4` | `RrStressSeq` | 1000 | High-traffic stability | ✅ Passing |
 | `RrCornerTest4` | `RrCornerSeq` | 500 | Directed corner cases | ✅ Passing |
 | `RrRegressionTest4` | `RrVirtualSeq` | ~40000 | Long regression run | ✅ Passing |
+| `RrCallbackLogTest4` | `RrBaseReqSeq` | 10 | Logging callback demo | ✅ Passing |
+| `RrCallbackErrTest4` | `RrBaseReqSeq` | 50 | Error injection callback demo | ✅ Passing |
+| `RrCallbackMultiTest4` | `RrBaseReqSeq` | 30 | Stacked callbacks demo | ✅ Passing |
+| `RrCallbackFullTest4` | `RrCallbackVirtualSeq` | 60 | Full callback demo (4 phases) | ✅ Passing |
 
 ### 7.2 Running Tests
 
@@ -446,7 +453,11 @@ def granted_idx(gnt):
 | Feature | Description | Priority |
 |---------|-------------|----------|
 | **UVM RAL** | Register abstraction layer (if DUT has config regs) | Low |
-| **Callbacks** | Pre/post driver callbacks for injection | Medium |
+| **Driver Callbacks** | Pre/post drive callbacks for injection | ✅ Implemented |
+| **Monitor Callbacks** | on_sample, on_pattern hooks | Medium |
+| **Scoreboard Callbacks** | on_mismatch, pre_compare hooks | Medium |
+| **Clocking Blocks** | drv_cb, mon_cb for interface | Medium |
+| **Modports** | driver_mp, monitor_mp, dut_mp | Medium |
 | **Coverage merging** | Merge UCDB across multiple seeds/tests | High |
 | **CI/CD integration** | Jenkins/GitHub Actions for regression | High |
 | **Formal verification** | Use formal tools to prove SVA properties | Medium |

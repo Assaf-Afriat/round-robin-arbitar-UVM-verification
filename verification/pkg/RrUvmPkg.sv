@@ -17,8 +17,9 @@ package RrUvmPkg;
   `include "transactions/RrReqItem.sv"
   `include "transactions/RrGntItem.sv"
 
-  // Agent
+  // Agent (callbacks must be before driver)
   `include "agent/RrAgentConfig.sv"
+  `include "agent/RrReqDriverCb.sv"
   `include "agent/RrReqDriver.sv"
   `include "agent/RrReqSequencer.sv"
   `include "agent/RrGntMonitor.sv"
@@ -41,6 +42,7 @@ package RrUvmPkg;
   `include "sequences/RrCornerSeq.sv"
   `include "sequences/RrDrainSeq.sv"
   `include "sequences/virtual/RrVirtualSeq.sv"
+  `include "sequences/virtual/RrCallbackVirtualSeq.sv"
 
   // Tests
   `include "tests/RrBaseTest.sv"
@@ -49,5 +51,6 @@ package RrUvmPkg;
   `include "tests/RrStressTest.sv"
   `include "tests/RrCornerTest.sv"
   `include "tests/RrRegressionTest.sv"
+  `include "tests/RrCallbackDemoTest.sv"
 
 endpackage : RrUvmPkg

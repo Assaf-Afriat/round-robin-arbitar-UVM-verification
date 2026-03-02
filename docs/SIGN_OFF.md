@@ -33,6 +33,7 @@ The Round-Robin Arbiter DUT has been successfully verified using a comprehensive
 | `RrStressTest4` | 1,000 | ~1,000 | 0 | ✅ PASS |
 | `RrCornerTest4` | 500 | ~500 | 0 | ✅ PASS |
 | `RrRegressionTest4` | ~40,000 | ~40,000 | 0 | ✅ PASS |
+| `RrCallbackFullTest4` | 60 | ~60 | 0 | ✅ PASS |
 
 ### 2.2 Test Descriptions
 
@@ -176,12 +177,14 @@ The `RrRefModel` accurately predicts DUT behavior for:
 | Request Driver | `agent/RrReqDriver.sv` | ✅ Implemented |
 | Request Sequencer | `agent/RrReqSequencer.sv` | ✅ Implemented |
 | Grant Monitor | `agent/RrGntMonitor.sv` | ✅ Implemented |
+| Driver Callbacks | `agent/RrReqDriverCb.sv` | ✅ Implemented |
 | Environment | `env/RrEnv.sv` | ✅ Implemented |
 | Reference Model | `scoreboard/RrRefModel.sv` | ✅ Implemented |
 | Scoreboard | `scoreboard/RrScoreboard.sv` | ✅ Implemented |
 | Coverage Collector | `coverage/RrCoverageCollector.sv` | ✅ Implemented |
 | SVA Assertions | `sva/rr_arbiter_sva.sv` | ✅ Implemented |
 | Virtual Sequence | `sequences/virtual/RrVirtualSeq.sv` | ✅ Implemented |
+| Callback Virtual Seq | `sequences/virtual/RrCallbackVirtualSeq.sv` | ✅ Implemented |
 | Testbench Top | `tb_top.sv` | ✅ Implemented |
 
 ### 7.2 Run Scripts
@@ -226,7 +229,7 @@ The `RrRefModel` accurately predicts DUT behavior for:
 
 | # | Criteria | Required | Achieved | Status |
 |---|----------|----------|----------|--------|
-| 1 | All planned tests passing | Yes | 5/5 | ✅ |
+| 1 | All planned tests passing | Yes | 9/9 | ✅ |
 | 2 | Assertion coverage = 100% | Yes | 100% | ✅ |
 | 3 | Zero assertion failures | Yes | 0 | ✅ |
 | 4 | Zero scoreboard mismatches | Yes | 0 | ✅ |
@@ -257,8 +260,8 @@ Simulator:          QuestaSim 2025.1
 
   TEST RESULTS
   ─────────────────────────────────────────────────────────────────────────────
-    Total Tests:            5
-    Passing:                5 (100%)
+    Total Tests:            9
+    Passing:                9 (100%)
     Failing:                0
   
   ASSERTION RESULTS
@@ -379,7 +382,8 @@ round-robin-arbiter/
 │   │   ├── RrReqDriver.sv          # Request driver
 │   │   ├── RrReqSequencer.sv       # Request sequencer
 │   │   ├── RrGntMonitor.sv         # Grant monitor (samples req & gnt)
-│   │   └── RrAgentConfig.sv        # Agent configuration
+│   │   ├── RrAgentConfig.sv        # Agent configuration
+│   │   └── RrReqDriverCb.sv        # Driver callbacks
 │   ├── env/
 │   │   └── RrEnv.sv                # UVM environment
 │   ├── scoreboard/
@@ -394,14 +398,16 @@ round-robin-arbiter/
 │   │   ├── RrCornerSeq.sv          # Corner case sequence
 │   │   ├── RrDrainSeq.sv           # Drain sequence
 │   │   └── virtual/
-│   │       └── RrVirtualSeq.sv     # Virtual sequence
+│   │       ├── RrVirtualSeq.sv         # Virtual sequence
+│   │       └── RrCallbackVirtualSeq.sv # Callback demo sequence
 │   ├── tests/
 │   │   ├── RrBaseTest.sv           # Base test class
 │   │   ├── RrFullTest.sv           # Full test
 │   │   ├── RrTimeoutTest.sv        # Timeout test
 │   │   ├── RrStressTest.sv         # Stress test
 │   │   ├── RrCornerTest.sv         # Corner test
-│   │   └── RrRegressionTest.sv     # Regression test
+│   │   ├── RrRegressionTest.sv     # Regression test
+│   │   └── RrCallbackDemoTest.sv   # Callback demo tests
 │   ├── sva/
 │   │   └── rr_arbiter_sva.sv       # SVA assertions (bound in tb_top.sv)
 │   └── tb_top.sv                   # Testbench top
@@ -417,7 +423,8 @@ round-robin-arbiter/
 │   └── SPEC.md                     # DUT specification
 └── docs/
     ├── UVM_VERIFICATION_PLAN.md    # Verification plan
-    └── SIGN_OFF.md                 # This document
+    ├── SIGN_OFF.md                 # This document
+    └── FUTURE_ENHANCEMENTS.md      # Planned improvements
 ```
 
 ### 12.2 How to Run

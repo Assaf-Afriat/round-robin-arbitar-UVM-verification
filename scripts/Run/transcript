@@ -2,7 +2,7 @@
 # reading modelsim.ini
 # QuestaSim-64 vopt 2025.1_2 Compiler 2025.04 Apr  7 2025
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
-# Start time: 12:06:00 on Mar 02,2026
+# Start time: 17:39:43 on Mar 02,2026
 # vopt "+acc=npr" "+cover=bcesft" -L mtiUvm -o tb_top_opt work.tb_top 
 # 
 # Top level modules:
@@ -15,16 +15,13 @@
 # -- Loading module round_robin_arbiter
 # -- Loading module rr_arbiter_sva
 # ** Warning: (vopt-13408) Code coverage will be disabled for some DUs/packages/classes and source files.
-# Optimizing 9 design-units (inlining 0/4 module instances):
-# -- Optimizing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)(fast)
-# -- Optimizing package mtiUvm.questa_uvm_pkg(fast)
+# Incremental compilation check found 4 design-units (out of 9) may be reused.
+# Optimizing 5 design-units (inlining 0/4 module instances):
 # -- Optimizing package RrUvmPkg(fast)
 # -- Optimizing package tb_top_sv_unit(fast)
 # -- Optimizing module rr_arbiter_sva(fast)
 # -- Optimizing module round_robin_arbiter(fast)
 # -- Optimizing module tb_top(fast)
-# -- Optimizing interface RrArbIf(fast__2)
-# -- Optimizing interface RrArbIf(fast)
 # Optimized design name is tb_top_opt
-# End time: 12:06:02 on Mar 02,2026, Elapsed time: 0:00:02
+# End time: 17:39:44 on Mar 02,2026, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 2
