@@ -1,0 +1,21 @@
+# QuestaSim/ModelSim generated files
+work/
+transcript
+*.wlf
+vsim.wlf
+modelsim.ini
+
+# Coverage reports (generated, contain vendored JS/CSS)
+# Only ignore root-level coverage folder, not verification/coverage/
+/coverage/
+
+# Logs (can be regenerated)
+logs/
+
+# Backup files
+*.bak
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
