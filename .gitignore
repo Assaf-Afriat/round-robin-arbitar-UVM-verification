@@ -2,8 +2,11 @@
 work/
 transcript
 *.wlf
-vsim.wlf
+*.ucdb
 modelsim.ini
+
+# Simulation work folders
+sim/
 
 # Coverage reports (generated, contain vendored JS/CSS)
 # Only ignore root-level coverage folder, not verification/coverage/
@@ -11,6 +14,13 @@ modelsim.ini
 
 # Logs (can be regenerated)
 logs/
+
+# Verification generated files (keep source, ignore generated)
+verification/work/
+verification/transcript
+
+# Scripts generated files
+scripts/Run/transcript
 
 # Backup files
 *.bak
